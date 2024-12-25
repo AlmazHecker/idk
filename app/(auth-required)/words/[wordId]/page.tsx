@@ -15,13 +15,13 @@ const Page: FC<PageProps> = async ({ params }) => {
 
   return (
     <div>
-      <div className="flex justify-center items-center mt-10">
-        <h2 className="pb-2 text-5xl font-semibold  transition-colors first:mt-0">
+      <div className="flex justify-center text-3xl md:text-5xl items-center mt-10">
+        <h2 className="pb-2  font-semibold  transition-colors first:mt-0">
           {word.word}
         </h2>
 
-        <p className="text-5xl mx-20">===</p>
-        <h2 className="dpb-2 text-5xl font-semibold transition-colors first:mt-0">
+        <p className="mx-5 md:mx-20">===</p>
+        <h2 className="dpb-2 font-semibold transition-colors first:mt-0">
           {word.translation}
         </h2>
       </div>

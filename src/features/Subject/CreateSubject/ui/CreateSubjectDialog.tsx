@@ -35,7 +35,9 @@ export default function CreateSubjectDialog({ ...props }: Props) {
   return (
     <Dialog {...props}>
       <DialogContent
-        className={"p-0 max-w-screen-md overflow-y-scroll max-h-[90%]"}
+        className={
+          "p-0 w-11/12 md:max-w-screen-md overflow-y-scroll max-h-[90%]"
+        }
       >
         <DialogTitle className="sr-only">New Subject</DialogTitle>
         <DialogDescription className="sr-only">

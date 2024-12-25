@@ -4,7 +4,7 @@ import LogoutButton from "@/src/features/Authentication/Logout/ui/LogoutButton";
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center gap-2 pb-4 h-[52px]">
+    <div className="flex flex-col md:flex-row h-auto justify-between items-center gap-2 pb-4 md:h-[52px]">
       <div>
         <Link className="text-md" href="/words" variant="ghost">
           Words

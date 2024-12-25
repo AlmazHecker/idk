@@ -30,9 +30,13 @@ export default function Page() {
 
   return (
     <div>
-      <div className="py-4 flex justify-between gap-4">
-        <div className="flex gap-4">
-          <DatePicker value={date} onChange={setDate} className="w-[250px]" />
+      <div className="py-4 flex flex-col md:flex-row justify-between gap-4">
+        <div className="flex gap-4 flex-col md:flex-row">
+          <DatePicker
+            value={date}
+            onChange={setDate}
+            className="w-full md:w-[250px]"
+          />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
