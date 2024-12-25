@@ -12,7 +12,7 @@ const SelectDate = () => {
 
   const onChange = (date?: Date) => {
     if (!date) return;
-    router.push(`?date=${date.toLocaleDateString()}`);
+    router.push(`?date=${date.toJSON()}`);
   };
 
   if (pathname !== "/words") return;

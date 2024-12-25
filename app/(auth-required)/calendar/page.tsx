@@ -32,7 +32,7 @@ const LandingPage = () => {
   };
 
   const onDayClick = (slotInfo: SlotInfo) => {
-    return router.push(`/words?date=${slotInfo.start.toLocaleDateString()}`);
+    return router.push(`/words?date=${slotInfo.start.toJSON()}`);
   };
 
   return (
