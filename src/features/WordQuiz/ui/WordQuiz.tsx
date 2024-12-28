@@ -12,8 +12,9 @@ export const shuffleArray = <T,>(array: T[]): T[] => {
 
 type WordQuizProps = {
   words: Word[];
+  difficulty?: string;
 };
-const WordQuiz: FC<WordQuizProps> = ({ words }) => {
+const WordQuiz: FC<WordQuizProps> = ({ words, difficulty }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
 

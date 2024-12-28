@@ -19,7 +19,7 @@ const Header = async () => {
         <Link className="text-md" href="/calendar" variant="ghost">
           Calendar
         </Link>
-        <Link className="text-md" href="/quiz" variant="ghost">
+        <Link className="text-md" href="/quiz-settings" variant="ghost">
           Quiz
         </Link>
       </div>
