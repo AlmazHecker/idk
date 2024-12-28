@@ -30,7 +30,7 @@ type WordFormProps = {
 };
 
 const SubjectForm: FC<WordFormProps> = ({ value, onSubmit, type }) => {
-  const { form, errors, handleSubmit, isDirty, isValid } =
+  const { form, errors, handleSubmit, isDirty, isValid, isSubmitting } =
     useCustomForm<SubjectFormData>({
       schema: subjectFormSchema,
       values: mapSubjectApiDataToFormData(value),
@@ -72,7 +72,7 @@ const SubjectForm: FC<WordFormProps> = ({ value, onSubmit, type }) => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button type="submit" disabled={!isDirty || !isValid}>
+        <Button type="submit" disabled={!isDirty || !isValid || isSubmitting}>
           {type === "CREATE" ? "Add" : "Save"}
         </Button>
       </CardFooter>

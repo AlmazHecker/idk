@@ -1,7 +1,7 @@
 import { FC } from "react";
-import fetcher from "@shared/api/fetch";
-import { WithRelation } from "@shared/types/prisma";
 import GeminiChat from "@/src/features/Gemini/ui/GeminiChat";
+import { prisma } from "@shared/lib/prisma-client";
+import { redirect } from "next/navigation";
 
 type PageProps = {
   params: Promise<{ wordId: string }>;
@@ -9,9 +9,19 @@ type PageProps = {
 
 const Page: FC<PageProps> = async ({ params }) => {
   const wordId = (await params).wordId;
-  const word = await fetcher<WithRelation<"Word", "subject">>(
-    `/api/words/${wordId}`,
-  );
+
+  if (Number.isNaN(+wordId)) {
+    return redirect("/words");
+  }
+
+  const word = await prisma.word.findFirst({
+    where: { id: +wordId },
+    include: { subject: true },
+  });
+
+  if (!word) {
+    return redirect("/words");
+  }
 
   return (
     <div>

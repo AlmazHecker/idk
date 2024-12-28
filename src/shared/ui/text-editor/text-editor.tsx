@@ -156,7 +156,7 @@ const extensions = [
 
 type TextEditorProps = {
   onChange?: (text: string) => void;
-  value: string;
+  value?: string;
   error?: FieldError;
   editable?: boolean;
 };

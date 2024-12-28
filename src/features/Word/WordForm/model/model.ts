@@ -8,7 +8,8 @@ export const wordFormSchema = z.object({
       title: z.string(),
       id: z.number(),
     })
-    .optional(),
+    .optional()
+    .nullable(),
 });
 
 export type WordFormData = z.infer<typeof wordFormSchema>;

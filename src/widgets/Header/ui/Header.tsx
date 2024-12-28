@@ -8,7 +8,7 @@ const Header = async () => {
   const theme = (await cookies()).get("theme");
 
   return (
-    <div className="flex flex-col md:flex-row h-auto justify-between items-center gap-2 pb-4 md:h-[52px]">
+    <div className="flex flex-col md:flex-row h-auto text-center justify-between items-center gap-2 pb-4 md:h-[52px]">
       <div>
         <Link className="text-md" href="/words" variant="ghost">
           Words
@@ -18,6 +18,9 @@ const Header = async () => {
         </Link>
         <Link className="text-md" href="/calendar" variant="ghost">
           Calendar
+        </Link>
+        <Link className="text-md" href="/quiz" variant="ghost">
+          Quiz
         </Link>
       </div>
 

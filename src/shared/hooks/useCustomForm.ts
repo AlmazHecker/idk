@@ -34,6 +34,7 @@ export function useCustomForm<T extends FieldValues>({
     errors,
     isDirty: form.formState.isDirty,
     isValid: form.formState.isValid,
+    isSubmitting: form.formState.isSubmitting,
     handleSubmit: (func: (data: T, form: UseFormReturn<T>) => void) =>
       form.handleSubmit((data) => onSubmit(data, func)),
   };
