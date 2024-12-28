@@ -30,10 +30,11 @@ type WordFormProps = {
 };
 
 const SubjectForm: FC<WordFormProps> = ({ value, onSubmit, type }) => {
-  const { form, errors, handleSubmit } = useCustomForm<SubjectFormData>({
-    schema: subjectFormSchema,
-    values: mapSubjectApiDataToFormData(value),
-  });
+  const { form, errors, handleSubmit, isDirty, isValid } =
+    useCustomForm<SubjectFormData>({
+      schema: subjectFormSchema,
+      values: mapSubjectApiDataToFormData(value),
+    });
 
   return (
     <form className="scroll-auto" onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +72,9 @@ const SubjectForm: FC<WordFormProps> = ({ value, onSubmit, type }) => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button type="submit">{type === "CREATE" ? "Add" : "Save"}</Button>
+        <Button type="submit" disabled={!isDirty || !isValid}>
+          {type === "CREATE" ? "Add" : "Save"}
+        </Button>
       </CardFooter>
     </form>
   );

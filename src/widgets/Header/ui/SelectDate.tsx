@@ -16,7 +16,9 @@ const SelectDate = () => {
   };
 
   if (pathname !== "/words") return;
-  return <DatePicker value={value} className="w-[200px]" onChange={onChange} />;
+  return (
+    <DatePicker value={value} className="w-[200px] mr-2" onChange={onChange} />
+  );
 };
 
 export default SelectDate;

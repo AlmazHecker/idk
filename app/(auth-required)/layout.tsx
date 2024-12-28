@@ -14,7 +14,7 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
   }
 
   return (
-    <div className="pt-6 px-8 pb-20 md:gap-16 gap-4 sm:px-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="pt-6 px-8 pb-20 md:gap-16 gap-4 sm:px-20">
       <Header />
       {children}
     </div>
