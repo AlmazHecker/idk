@@ -1,20 +1,30 @@
 import WordQuiz from "@/src/features/WordQuiz/ui/WordQuiz";
-import React from "react";
-import { prisma } from "@shared/lib/prisma-client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import { Word } from "@prisma/client";
+import React, { FC } from "react";
+import { getRandomWords } from "@/app/actions/word";
+import { DIFFICULTIES } from "@/src/features/WordQuiz/model/difficulty";
 
-const Page = async () => {
-  const session = await getServerSession(authOptions);
+type PageProps = {
+  searchParams: Promise<{
+    "word-count": string;
+    difficulty: string;
+    day: string;
+  }>;
+};
 
-  const randomWords: Word[] = await prisma.$queryRaw`
-  SELECT * 
-  FROM "Word" 
-  WHERE "userId" = ${+session?.user?.id}
-  ORDER BY RANDOM() 
-  LIMIT 10;
-`;
+const getLimitForDifficulty = (difficulty: string) => {
+  const { min, max } = DIFFICULTIES[difficulty] || DIFFICULTIES.EASY;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const Page: FC<PageProps> = async ({ searchParams }) => {
+  const p = await searchParams;
+
+  const day = p?.day ? new Date(p?.day) : "";
+  const difficulty = p?.difficulty;
+
+  const limit = getLimitForDifficulty(difficulty);
+
+  const randomWords = await getRandomWords(day, limit);
 
   return (
     <div className="max-w-xl mx-auto grid place-items-center h-[calc(100vh-92px-6.5rem)] md:h-[calc(100vh-76px-5rem)]">

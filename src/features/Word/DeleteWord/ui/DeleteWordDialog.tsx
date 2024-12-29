@@ -14,6 +14,7 @@ import { Word } from "@prisma/client";
 import fetcher from "@shared/api/fetch";
 import { mutate } from "swr";
 import { mutateWords } from "@entities/word/mutations";
+import useAction from "@shared/hooks/useAction";
 
 type DeleteWordDialogProps = AlertDialogProps & {
   value: Word;
@@ -30,6 +31,8 @@ const DeleteWordDialog: FC<DeleteWordDialogProps> = ({ value, ...props }) => {
     }
   };
 
+  const { isLoading, executeAction } = useAction(onSubmit);
+
   return (
     <AlertDialog {...props}>
       <AlertDialogContent>
@@ -40,8 +43,10 @@ const DeleteWordDialog: FC<DeleteWordDialogProps> = ({ value, ...props }) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
+          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={executeAction} disabled={isLoading}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

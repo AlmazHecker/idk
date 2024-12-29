@@ -18,12 +18,16 @@ const Page = () => {
   ) => {
     try {
       formApi.clearErrors();
-      return signIn("credentials", {
+      const res = await signIn("credentials", {
         username: data.username,
         password: data.password,
         callbackUrl: "/",
-        redirect: true,
+        redirect: false,
       });
+
+      if (res?.error) {
+        return formApi.setError("root", { message: res.error });
+      }
     } catch (e) {
       formApi.setError("root", {
         message: isApiError(e) ? e?.message : "IDK. Something went wrong.",
