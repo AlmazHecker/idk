@@ -5,6 +5,7 @@ import { Progress } from "@ui/progress";
 import QuizQuestion from "@/src/features/WordQuiz/ui/QuizQuestion";
 import QuizResults from "@/src/features/WordQuiz/ui/QuizResults";
 import { Word } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 export const shuffleArray = <T,>(array: T[]): T[] => {
   return array.sort(() => Math.random() - 0.5);
@@ -12,9 +13,8 @@ export const shuffleArray = <T,>(array: T[]): T[] => {
 
 type WordQuizProps = {
   words: Word[];
-  difficulty?: string;
 };
-const WordQuiz: FC<WordQuizProps> = ({ words, difficulty }) => {
+const WordQuiz: FC<WordQuizProps> = ({ words }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
 
@@ -43,9 +43,12 @@ const WordQuiz: FC<WordQuizProps> = ({ words, difficulty }) => {
     }
   };
 
+  const router = useRouter();
+
   const resetQuiz = () => {
     setCurrentQuestionIndex(0);
     setScore(0);
+    router.replace("");
   };
 
   const [isMounted, setIsMounted] = useState(false);

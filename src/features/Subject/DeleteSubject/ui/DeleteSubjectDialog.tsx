@@ -13,6 +13,7 @@ import { Subject } from "@prisma/client";
 import fetcher from "@shared/api/fetch";
 import { mutate } from "swr";
 import { mutateSubjects } from "@entities/subject/mutations";
+import useAction from "@shared/hooks/useAction";
 
 type Props = AlertDialogProps & {
   value: Subject;
@@ -29,6 +30,8 @@ export default function DeleteSubjectDialog({ value, ...props }: Props) {
     }
   };
 
+  const { isLoading, executeAction } = useAction(onSubmit);
+
   return (
     <AlertDialog {...props}>
       <AlertDialogContent>
@@ -39,8 +42,10 @@ export default function DeleteSubjectDialog({ value, ...props }: Props) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
+          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogAction disabled={isLoading} onClick={executeAction}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -9,10 +9,10 @@ const model = genAI.getGenerativeModel({
 });
 
 const generationConfig: GenerationConfig = {
-  temperature: 1,
-  topP: 0.95,
+  temperature: 0.5,
+  topP: 0.7,
   topK: 40,
-  maxOutputTokens: 256,
+  maxOutputTokens: 2048,
   responseMimeType: "text/plain",
 };
 
