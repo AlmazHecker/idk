@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Providers from "@/app/Providers";
+import Providers from "@app/Providers";
 import { cookies } from "next/headers";
 
 export const metadata: Metadata = {

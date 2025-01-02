@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 import Header from "@/src/widgets/Header/ui/Header";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { authOptions } from "@app/api/auth/[...nextauth]/auth";
 
 type LayoutProps = {
   children: ReactNode;

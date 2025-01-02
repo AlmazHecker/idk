@@ -4,11 +4,7 @@ import { redirect } from "next/navigation";
 const Page = async () => {
   const session = await getServerSession();
 
-  if (Boolean(session)) {
-    redirect("/words");
-  } else {
-    redirect("/login");
-  }
+  return redirect(session ? "/words" : "/login");
 };
 
 export default Page;

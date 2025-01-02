@@ -1,7 +1,7 @@
 "use client";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { Button } from "@ui/button";
-import { setThemeCookie } from "@/app/actions/theme";
+import { setThemeCookie } from "@app/actions/theme";
 
 type Props = {
   theme?: string;

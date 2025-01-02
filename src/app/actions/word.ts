@@ -3,7 +3,7 @@
 import { endOfDay, startOfDay } from "date-fns";
 import { prisma } from "@shared/lib/prisma-client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { authOptions } from "@app/api/auth/[...nextauth]/auth";
 import { Word } from "@prisma/client";
 
 export const getRandomWords = async (day: Date | string, limit: number) => {

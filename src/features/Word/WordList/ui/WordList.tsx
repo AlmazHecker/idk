@@ -7,15 +7,20 @@ import { WithRelation } from "@shared/types/prisma";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useColumnVisibility } from "@shared/hooks/useColumnVisibility";
-
+import Pageable from "@ui/pagination";
+import { Pagination as PaginationType } from "@shared/types/pagination";
+import { useState } from "react";
 type WordListProps = {
   date: Date;
 };
 
 export default function WordList({ date }: WordListProps) {
+  const [page, setPage] = useState<number>(0);
+
   const { data: words, isLoading } = useSWR<{
     content: WithRelation<"Word", "subject">[];
-  }>(`/api/words?day=${date.toISOString()}`, fetcher);
+    pagination: PaginationType;
+  }>(`/api/words?day=${date.toISOString()}&page=${page}`, fetcher);
 
   const router = useRouter();
 
@@ -34,11 +39,18 @@ export default function WordList({ date }: WordListProps) {
   }
 
   return (
-    <DataTable
-      columnVisibility={columnVisibility}
-      onRowClick={goToDetails}
-      columns={getWordListColumns()}
-      data={words?.content || []}
-    />
+    <>
+      <DataTable
+        columnVisibility={columnVisibility}
+        onRowClick={goToDetails}
+        columns={getWordListColumns()}
+        data={words?.content || []}
+      />
+      <Pageable
+        onChange={setPage}
+        totalPage={words?.pagination?.totalPages}
+        currentPage={words?.pagination?.page}
+      />
+    </>
   );
 }

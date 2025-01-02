@@ -1,6 +1,6 @@
 import WordQuiz from "@/src/features/WordQuiz/ui/WordQuiz";
 import React, { FC } from "react";
-import { getRandomWords } from "@/app/actions/word";
+import { getRandomWords } from "@app/actions/word";
 import { DIFFICULTIES } from "@/src/features/WordQuiz/model/difficulty";
 
 type PageProps = {

@@ -25,7 +25,7 @@ export const getWordListColumns = (): ColumnDef<
     {
       accessorKey: "id",
       header: "ID",
-      cell: (info) => info.getValue(),
+      cell: (info) => info.row.index,
     },
     {
       header: "Subject",

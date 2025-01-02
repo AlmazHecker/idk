@@ -4,7 +4,8 @@ import {
   wordFormSchema,
 } from "@/src/features/Word/WordForm/model/model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { authOptions } from "@app/api/auth/[...nextauth]/auth";
+import { Pagination } from "@shared/types/pagination";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -75,6 +76,13 @@ export async function GET(request: Request) {
   const endOfDay = new Date(startOfDay);
   endOfDay.setHours(23, 59, 59, 999);
 
+  const totalCount = await prisma.word.count({
+    where: {
+      userId: +session.user?.id,
+      createdAt: { gte: startOfDay, lte: endOfDay },
+    },
+  });
+
   const words = await prisma.word.findMany({
     where: {
       userId: +session.user?.id,
@@ -85,5 +93,15 @@ export async function GET(request: Request) {
     include: { subject: true },
   });
 
-  return Response.json({ content: words });
+  const totalPages = Math.ceil(totalCount / size);
+
+  return Response.json({
+    content: words,
+    pagination: {
+      page,
+      size,
+      totalPages,
+      totalCount,
+    } satisfies Pagination,
+  });
 }

@@ -4,7 +4,7 @@ import {
   subjectFormSchema,
 } from "@/src/features/Subject/SubjectForm/model/model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { authOptions } from "@app/api/auth/[...nextauth]/auth";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
