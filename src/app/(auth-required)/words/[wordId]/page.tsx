@@ -37,6 +37,7 @@ const Page: FC<PageProps> = async ({ params }) => {
       </div>
 
       <GeminiChat
+        wordId={wordId}
         value={`I'm learning new language and want to know when to use ${word.word} word ?(Briefly)`}
       />
     </div>

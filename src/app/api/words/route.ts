@@ -91,6 +91,9 @@ export async function GET(request: Request) {
     skip: (page - 1) * size,
     take: size,
     include: { subject: true },
+    omit: {
+      explanation: true,
+    },
   });
 
   const totalPages = Math.ceil(totalCount / size);

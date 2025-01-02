@@ -2,6 +2,7 @@
 import { useState, useCallback, FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import fetcher from "@shared/api/fetch";
+import { Button } from "@ui/button";
 
 const useChat = (defaultMessage: string = "") => {
   const [message, setMessage] = useState(defaultMessage);
@@ -34,17 +35,33 @@ const useChat = (defaultMessage: string = "") => {
 
 type ChatComponentProps = {
   value?: string;
+  wordId: string;
 };
 
 const ChatComponent = ({ value }: ChatComponentProps) => {
   const { message, setMessage, response, isLoading, error, sendMessage } =
     useChat(value);
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
     await sendMessage(message);
     setMessage("");
+    setIsSaved(false); // Reset saved state when new response is received
+  };
+
+  const handleSave = async () => {
+    try {
+      // TODO: Implement save functionality
+      // await fetcher('/api/save-explanation', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ question: message, explanation: response })
+      // });
+      setIsSaved(true);
+    } catch (err) {
+      console.error("Failed to save explanation:", err);
+    }
   };
 
   return (
@@ -76,42 +93,52 @@ const ChatComponent = ({ value }: ChatComponentProps) => {
       )}
 
       {response && (
-        <div className="geminichka p-4 border rounded bg-gray-50 text-black prose dark:prose-invert max-w-none">
-          <ReactMarkdown
-            components={{
-              // Style code fences
-              pre({ children, ...props }) {
-                return (
-                  <pre
-                    className="bg-gray-100 p-4 rounded-lg overflow-auto"
-                    {...props}
-                  >
-                    {children}
-                  </pre>
-                );
-              },
-              // Style links
-              a({ children, ...props }) {
-                return (
-                  <a className="text-blue-500 hover:text-blue-600" {...props}>
-                    {children}
-                  </a>
-                );
-              },
-              // Style headings
-              h1: ({ ...props }) => (
-                <h1 className="text-2xl font-bold mt-6 mb-4" {...props} />
-              ),
-              h2: ({ ...props }) => (
-                <h2 className="text-xl font-bold mt-5 mb-3" {...props} />
-              ),
-              h3: ({ ...props }) => (
-                <h3 className="text-lg font-bold mt-4 mb-2" {...props} />
-              ),
-            }}
-          >
-            {response}
-          </ReactMarkdown>
+        <div className="space-y-4">
+          <div className="geminichka p-4 border rounded bg-gray-50 text-black prose dark:prose-invert max-w-none">
+            <ReactMarkdown
+              components={{
+                pre({ children, ...props }) {
+                  return (
+                    <pre
+                      className="bg-gray-100 p-4 rounded-lg overflow-auto"
+                      {...props}
+                    >
+                      {children}
+                    </pre>
+                  );
+                },
+                a({ children, ...props }) {
+                  return (
+                    <a className="text-blue-500 hover:text-blue-600" {...props}>
+                      {children}
+                    </a>
+                  );
+                },
+                h1: ({ ...props }) => (
+                  <h1 className="text-2xl font-bold mt-6 mb-4" {...props} />
+                ),
+                h2: ({ ...props }) => (
+                  <h2 className="text-xl font-bold mt-5 mb-3" {...props} />
+                ),
+                h3: ({ ...props }) => (
+                  <h3 className="text-lg font-bold mt-4 mb-2" {...props} />
+                ),
+              }}
+            >
+              {response}
+            </ReactMarkdown>
+          </div>
+
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-sm text-gray-600">Like the explanation?</span>
+            <Button
+              onClick={handleSave}
+              disabled={isSaved}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSaved ? "Saved!" : "Save"}
+            </Button>
+          </div>
         </div>
       )}
     </div>
