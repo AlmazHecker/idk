@@ -2,6 +2,7 @@ import { FC } from "react";
 import GeminiChat from "@/src/features/Gemini/ui/GeminiChat";
 import { prisma } from "@shared/lib/prisma-client";
 import { redirect } from "next/navigation";
+import { isNotNumberLike } from "@shared/lib/utils";
 
 type PageProps = {
   params: Promise<{ wordId: string }>;
@@ -10,7 +11,7 @@ type PageProps = {
 const Page: FC<PageProps> = async ({ params }) => {
   const wordId = (await params).wordId;
 
-  if (Number.isNaN(+wordId)) {
+  if (isNotNumberLike(wordId)) {
     return redirect("/words");
   }
 
@@ -25,7 +26,7 @@ const Page: FC<PageProps> = async ({ params }) => {
 
   return (
     <div>
-      <div className="flex justify-center text-3xl md:text-5xl items-center mt-10">
+      <div className="flex justify-center text-3xl items-center mt-10">
         <h2 className="pb-2  font-semibold  transition-colors first:mt-0">
           {word.word}
         </h2>

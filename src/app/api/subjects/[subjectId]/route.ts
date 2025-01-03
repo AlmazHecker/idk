@@ -3,6 +3,7 @@ import {
   SubjectFormData,
   subjectFormSchema,
 } from "@/src/features/Subject/SubjectForm/model/model";
+import { isNotNumberLike } from "@shared/lib/utils";
 
 type URLParams = {
   subjectId: string;
@@ -14,7 +15,7 @@ export async function PUT(
 ) {
   const subjectId = (await params).subjectId;
 
-  if (Number.isNaN(+subjectId)) {
+  if (isNotNumberLike(subjectId)) {
     return Response.json({ message: "subjectId shouldn't be null!" });
   }
 
@@ -44,7 +45,7 @@ export async function DELETE(
 ) {
   const subjectId = (await params).subjectId;
 
-  if (Number.isNaN(+subjectId)) {
+  if (isNotNumberLike(subjectId)) {
     return Response.json({ message: "subjectId shouldn't be null!" });
   }
 

@@ -2,13 +2,14 @@ import { TextEditor } from "@ui/text-editor/text-editor";
 import ScrollDown from "@ui/scroll-down/scroll-down";
 import { prisma } from "@shared/lib/prisma-client";
 import { redirect } from "next/navigation";
+import { isNotNumberLike } from "@shared/lib/utils";
 
 type Params = Promise<{ subjectId: string }>;
 
 const Page = async ({ params }: { params: Params }) => {
   const { subjectId } = await params;
 
-  if (Number.isNaN(+subjectId)) {
+  if (isNotNumberLike(subjectId)) {
     return redirect("/subjects");
   }
   const subject = await prisma.subject.findFirst({ where: { id: +subjectId } });

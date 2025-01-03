@@ -62,7 +62,7 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const day = searchParams.get("day");
-  const timezone = searchParams.get("timezone") || "UTC"; // Default to UTC if no timezone provided
+  const timezone = searchParams.get("timezone") || "UTC";
 
   const page = Number(searchParams.get("page")) || 1;
   const size = Number(searchParams.get("size")) || 10;
@@ -81,25 +81,26 @@ export async function GET(request: Request) {
   const start = fromZonedTime(startOfDay(parsedDate), timezone);
   const end = fromZonedTime(endOfDay(parsedDate), timezone);
 
-  const totalCount = await prisma.word.count({
-    where: {
-      userId: +session.user?.id,
-      createdAt: { gte: start, lte: end },
-    },
-  });
-
-  const words = await prisma.word.findMany({
-    where: {
-      userId: +session.user?.id,
-      createdAt: { gte: start, lte: end },
-    },
-    skip: (page - 1) * size,
-    take: size,
-    include: { subject: true },
-    omit: {
-      explanation: true,
-    },
-  });
+  const [totalCount, words] = await Promise.all([
+    prisma.word.count({
+      where: {
+        userId: +session.user?.id,
+        createdAt: { gte: start, lte: end },
+      },
+    }),
+    prisma.word.findMany({
+      where: {
+        userId: +session.user?.id,
+        createdAt: { gte: start, lte: end },
+      },
+      skip: (page - 1) * size,
+      take: size,
+      include: { subject: true },
+      omit: {
+        explanation: true,
+      },
+    }),
+  ]);
 
   const totalPages = Math.ceil(totalCount / size);
 

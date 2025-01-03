@@ -3,6 +3,7 @@ import {
   wordFormSchema,
 } from "@/src/features/Word/WordForm/model/model";
 import { prisma } from "@shared/lib/prisma-client";
+import { isNotNumberLike } from "@shared/lib/utils";
 
 type URLParams = {
   wordId: string;
@@ -14,7 +15,7 @@ export async function PUT(
 ) {
   const wordId = (await params).wordId;
 
-  if (Number.isNaN(+wordId)) {
+  if (isNotNumberLike(wordId)) {
     return Response.json({ message: "WordId shouldn't be null!" });
   }
 
@@ -48,7 +49,7 @@ export async function DELETE(
 ) {
   const wordId = (await params).wordId;
 
-  if (Number.isNaN(+wordId)) {
+  if (isNotNumberLike(wordId)) {
     return Response.json({ message: "WordId shouldn't be null!" });
   }
 
@@ -63,7 +64,7 @@ export async function GET(
 ) {
   const wordId = (await params).wordId;
 
-  if (Number.isNaN(+wordId)) {
+  if (isNotNumberLike(wordId)) {
     return Response.json({ message: "WordId shouldn't be null!" });
   }
 

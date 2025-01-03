@@ -47,26 +47,46 @@ type ChatComponentProps = {
 const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
   const { message, setMessage, response, isLoading, error, sendMessage } =
     useChat({ defaultValue: value, defaultResponse: explanation });
-  const [isSaved, setIsSaved] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "loading" | "success" | "reject"
+  >("idle");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
+
     await sendMessage(message);
     setMessage("");
-    setIsSaved(false); // Reset saved state when new response is received
+    setSaveStatus("idle"); // Reset saved state when new response is received
   };
 
   const handleSave = async () => {
     try {
+      setSaveStatus("loading");
+
       await fetcher(`/api/words/${wordId}/explanation`, {
         method: "PUT",
         body: { content: response },
       });
-      setIsSaved(true);
+      setSaveStatus("success");
     } catch (err) {
+      setSaveStatus("reject");
+
       console.error("Failed to save explanation:", err);
     }
+  };
+
+  const getSaveButtonContent = () => {
+    if (saveStatus === "loading") {
+      return "Saving...";
+    }
+    if (saveStatus === "success") {
+      return "Saved!";
+    }
+    if (saveStatus === "reject") {
+      return "Unable to save :(";
+    }
+    return "Save";
   };
 
   return (
@@ -138,10 +158,10 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
             <span className="text-sm text-gray-600">Like the explanation?</span>
             <Button
               onClick={handleSave}
-              disabled={isSaved}
+              disabled={saveStatus === "loading" || saveStatus === "success"}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSaved ? "Saved!" : "Save"}
+              {getSaveButtonContent()}
             </Button>
           </div>
         </div>

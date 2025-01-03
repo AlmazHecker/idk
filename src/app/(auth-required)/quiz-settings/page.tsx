@@ -32,6 +32,7 @@ const Page = () => {
       `/quiz?difficulty=${quizSettings.difficulty}&day=${quizSettings.date?.toISOString() || ""}`,
     );
   };
+
   return (
     <form
       onSubmit={submitSettings}
