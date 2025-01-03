@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@app/api/auth/[...nextauth]/auth";
 import { Pagination } from "@shared/types/pagination";
 import { endOfDay, startOfDay } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -61,6 +62,7 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const day = searchParams.get("day");
+  const timezone = searchParams.get("timezone") || "UTC"; // Default to UTC if no timezone provided
 
   const page = Number(searchParams.get("page")) || 1;
   const size = Number(searchParams.get("size")) || 10;
@@ -72,9 +74,12 @@ export async function GET(request: Request) {
     );
   }
 
+  // Convert the date to the specified timezone
   const parsedDate = new Date(day);
-  const start = startOfDay(parsedDate);
-  const end = endOfDay(parsedDate);
+
+  // Get start and end of day in the specified timezone
+  const start = fromZonedTime(startOfDay(parsedDate), timezone);
+  const end = fromZonedTime(endOfDay(parsedDate), timezone);
 
   const totalCount = await prisma.word.count({
     where: {

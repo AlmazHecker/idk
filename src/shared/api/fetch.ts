@@ -10,17 +10,22 @@ type FetchOptions<TBody = unknown> = {
 const BASE_URL = process.env.NEXT_PUBLIC_URL || "";
 
 const buildUrl = (url: string, params?: Params) => {
-  if (!params) return url;
+  const urlObj = new URL(url, BASE_URL);
 
-  const searchParams = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
-    if (value instanceof Date) {
-      searchParams.append(key, value.toISOString());
-    } else {
-      searchParams.append(key, String(value));
-    }
-  });
-  return `${url}?${searchParams.toString()}`;
+  const searchParams = new URLSearchParams(urlObj.search);
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value instanceof Date) {
+        searchParams.set(key, value.toISOString());
+      } else {
+        searchParams.set(key, String(value));
+      }
+    });
+  }
+
+  urlObj.search = searchParams.toString();
+  return urlObj.toString();
 };
 
 export default async function fetcher<TResponse = unknown, TBody = unknown>(
@@ -31,7 +36,10 @@ export default async function fetcher<TResponse = unknown, TBody = unknown>(
 
   const pathname = Array.isArray(endpoint) ? endpoint.join("") : endpoint;
 
-  const url = buildUrl(BASE_URL + pathname, params);
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const finalParams = { ...params, timezone: userTimezone };
+
+  const url = buildUrl(BASE_URL + pathname, finalParams);
 
   try {
     const response = await fetch(url, {
