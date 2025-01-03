@@ -77,6 +77,9 @@ export async function GET(request: Request) {
       createdAt: { gte: startOfDay, lte: endOfDay },
       title: { contains: search || "" },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
     select: { title: true, createdAt: true, updatedAt: true, id: true },
     skip: (page - 1) * size,
     take: size,

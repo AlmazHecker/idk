@@ -93,6 +93,9 @@ export async function GET(request: Request) {
         userId: +session.user?.id,
         createdAt: { gte: start, lte: end },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
       skip: (page - 1) * size,
       take: size,
       include: { subject: true },
