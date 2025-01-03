@@ -1,12 +1,13 @@
+"use client";
 import WordList from "@/src/features/Word/WordList/ui/WordList";
 import CreateWordForm from "@/src/features/Word/CreateWord/ui/CreateWordForm";
+import { useSearchParams } from "next/navigation";
 
-type PageProps = {
-  searchParams: Promise<{ date: string }>;
-};
-export default async function Page({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const date = params.date ? new Date(params.date) : new Date();
+export default function Page() {
+  const params = useSearchParams();
+  const dateParam = params.get("date");
+
+  const date = dateParam !== null ? new Date(dateParam) : new Date();
 
   return (
     <div className="grid items-center justify-items-center pb-20 gap-4">
