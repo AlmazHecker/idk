@@ -4,9 +4,14 @@ import ReactMarkdown from "react-markdown";
 import fetcher from "@shared/api/fetch";
 import { Button } from "@ui/button";
 
-const useChat = (defaultMessage: string = "") => {
-  const [message, setMessage] = useState(defaultMessage);
-  const [response, setResponse] = useState("");
+type Args = {
+  defaultValue?: string;
+  defaultResponse: string | null;
+};
+
+const useChat = ({ defaultValue = "", defaultResponse = "" }: Args) => {
+  const [message, setMessage] = useState(defaultValue);
+  const [response, setResponse] = useState(defaultResponse);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -36,11 +41,12 @@ const useChat = (defaultMessage: string = "") => {
 type ChatComponentProps = {
   value?: string;
   wordId: string;
+  explanation: string | null;
 };
 
-const ChatComponent = ({ value }: ChatComponentProps) => {
+const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
   const { message, setMessage, response, isLoading, error, sendMessage } =
-    useChat(value);
+    useChat({ defaultValue: value, defaultResponse: explanation });
   const [isSaved, setIsSaved] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -53,11 +59,10 @@ const ChatComponent = ({ value }: ChatComponentProps) => {
 
   const handleSave = async () => {
     try {
-      // TODO: Implement save functionality
-      // await fetcher('/api/save-explanation', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ question: message, explanation: response })
-      // });
+      await fetcher(`/api/words/${wordId}/explanation`, {
+        method: "PUT",
+        body: { content: response },
+      });
       setIsSaved(true);
     } catch (err) {
       console.error("Failed to save explanation:", err);

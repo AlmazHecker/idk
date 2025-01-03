@@ -7,19 +7,19 @@ export const useColumnVisibility = (
 ) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
-  const handleResize = () => {
-    const isMobile = window.innerWidth <= breakpoint;
-
-    setColumnVisibility((prev) => {
-      const newVisibility = { ...prev };
-      colsToHide.forEach((col) => {
-        newVisibility[col] = !isMobile;
-      });
-      return newVisibility;
-    });
-  };
-
   useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth <= breakpoint;
+
+      setColumnVisibility((prev) => {
+        const newVisibility = { ...prev };
+        colsToHide.forEach((col) => {
+          newVisibility[col] = !isMobile;
+        });
+        return newVisibility;
+      });
+    };
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
