@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       rel: "icon",
       type: "image/png",
       sizes: `${size}x${size}`,
-      url: `/favicon/favicon-${size}.png`,
+      url: `/favicon-${size}.png`,
     };
   }),
 };
