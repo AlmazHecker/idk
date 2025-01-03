@@ -1,6 +1,7 @@
 {
     "name": "IDK",
     "short_name": "IDK app",
+    "start_url": "/",
     "icons": [
         {
             "src": "/android-chrome-192.png",
