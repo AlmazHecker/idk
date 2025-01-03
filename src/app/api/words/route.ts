@@ -7,8 +7,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@app/api/auth/[...nextauth]/auth";
 import { Pagination } from "@shared/types/pagination";
 
-export const dynamic = "force-dynamic";
-
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
 
