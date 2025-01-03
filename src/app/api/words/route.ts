@@ -6,6 +6,7 @@ import {
 import { getServerSession } from "next-auth";
 import { authOptions } from "@app/api/auth/[...nextauth]/auth";
 import { Pagination } from "@shared/types/pagination";
+import { endOfDay, startOfDay } from "date-fns";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -72,36 +73,20 @@ export async function GET(request: Request) {
   }
 
   const parsedDate = new Date(day);
-  const startOfDay = new Date(
-    parsedDate.getUTCFullYear(),
-    parsedDate.getUTCMonth(),
-    parsedDate.getUTCDate(),
-    0,
-    0,
-    0,
-    0,
-  );
+  const start = startOfDay(parsedDate);
+  const end = endOfDay(parsedDate);
 
-  const endOfDay = new Date(
-    parsedDate.getUTCFullYear(),
-    parsedDate.getUTCMonth(),
-    parsedDate.getUTCDate(),
-    23,
-    59,
-    59,
-    999,
-  );
   const totalCount = await prisma.word.count({
     where: {
       userId: +session.user?.id,
-      createdAt: { gte: startOfDay, lte: endOfDay },
+      createdAt: { gte: start, lte: end },
     },
   });
 
   const words = await prisma.word.findMany({
     where: {
       userId: +session.user?.id,
-      createdAt: { gte: startOfDay, lte: endOfDay },
+      createdAt: { gte: start, lte: end },
     },
     skip: (page - 1) * size,
     take: size,
