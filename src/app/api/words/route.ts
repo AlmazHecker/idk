@@ -71,11 +71,26 @@ export async function GET(request: Request) {
     );
   }
 
-  const startOfDay = new Date(day);
-  startOfDay.setHours(0, 0, 0, 0);
-  const endOfDay = new Date(startOfDay);
-  endOfDay.setHours(23, 59, 59, 999);
+  const parsedDate = new Date(day);
+  const startOfDay = new Date(
+    parsedDate.getUTCFullYear(),
+    parsedDate.getUTCMonth(),
+    parsedDate.getUTCDate(),
+    0,
+    0,
+    0,
+    0,
+  );
 
+  const endOfDay = new Date(
+    parsedDate.getUTCFullYear(),
+    parsedDate.getUTCMonth(),
+    parsedDate.getUTCDate(),
+    23,
+    59,
+    59,
+    999,
+  );
   const totalCount = await prisma.word.count({
     where: {
       userId: +session.user?.id,
