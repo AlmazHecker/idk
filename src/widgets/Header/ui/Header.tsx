@@ -16,9 +16,6 @@ const Header = async () => {
         <Link className="text-md" href="/subjects" variant="ghost">
           Subjects
         </Link>
-        <Link className="text-md" href="/calendar" variant="ghost">
-          Calendar
-        </Link>
         <Link className="text-md" href="/quiz-settings" variant="ghost">
           Quiz
         </Link>

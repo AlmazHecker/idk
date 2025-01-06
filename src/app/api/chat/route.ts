@@ -6,6 +6,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash-exp",
+  systemInstruction: "output in HTML. Not full but content only",
 });
 
 const generationConfig: GenerationConfig = {
@@ -25,9 +26,26 @@ export async function GET(request: NextRequest) {
     history: [],
   });
 
-  const result = await chatSession.sendMessage(
+  const result = await chatSession.sendMessageStream(
     prompt || "How to say bye in Japanese ?",
   );
+  const stream = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of result.stream) {
+        let chunkText = chunk.text();
 
-  return Response.json({ content: result.response.text() });
+        if (chunkText.startsWith("html")) chunkText = chunkText.slice(4);
+        if (chunkText.includes("```")) chunkText = chunkText.replace("```", "");
+        controller.enqueue(new TextEncoder().encode(chunkText));
+      }
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/plain", // Change if you're sending HTML or another content type
+      "Transfer-Encoding": "chunked",
+    },
+  });
 }

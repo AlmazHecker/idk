@@ -2,11 +2,38 @@
 import "./styles.css";
 
 import { Editor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import Document from "@tiptap/extension-document";
 import React, { FC, ReactNode } from "react";
 import { Button } from "@ui/button";
 import { useEditor } from "@tiptap/react";
 import { FieldError } from "react-hook-form";
+
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import Heading from "@tiptap/extension-heading";
+import Text from "@tiptap/extension-text";
+import ListItem from "@tiptap/extension-list-item";
+import OrderedList from "@tiptap/extension-ordered-list";
+import BulletList from "@tiptap/extension-bullet-list";
+import Paragraph from "@tiptap/extension-paragraph";
+import Bold from "@tiptap/extension-bold";
+import History from "@tiptap/extension-history";
+import Italic from "@tiptap/extension-italic";
+import Blockquote from "@tiptap/extension-blockquote";
+
+const extensions = [
+  Heading,
+  Document,
+  Text,
+  OrderedList.configure({ keepMarks: true, keepAttributes: false }),
+  ListItem,
+  BulletList.configure({ keepMarks: true, keepAttributes: false }),
+  Paragraph,
+  Bold,
+  History,
+  Italic,
+  Blockquote,
+  HorizontalRule,
+];
 
 type EditorButtonProps = {
   action: () => void;
@@ -55,14 +82,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           isDisabled={() => !editor.can().chain().focus().toggleItalic().run()}
         >
           Italic
-        </EditorButton>
-
-        <EditorButton
-          action={() => editor.chain().focus().toggleStrike().run()}
-          isActive={() => editor.isActive("strike")}
-          isDisabled={() => !editor.can().chain().focus().toggleStrike().run()}
-        >
-          Strike
         </EditorButton>
 
         <EditorButton
@@ -118,12 +137,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         </EditorButton>
 
         <EditorButton
-          action={() => editor.chain().focus().setHardBreak().run()}
-        >
-          Hard break
-        </EditorButton>
-
-        <EditorButton
           action={() => editor.chain().focus().undo().run()}
           isDisabled={() => !editor.can().chain().focus().undo().run()}
         >
@@ -140,19 +153,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
     </div>
   );
 };
-
-const extensions = [
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    },
-  }),
-];
 
 type TextEditorProps = {
   onChange?: (text: string) => void;

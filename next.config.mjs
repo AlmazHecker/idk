@@ -1,3 +1,5 @@
+import withAnalyzer from "@next/bundle-analyzer";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -6,4 +8,4 @@ const nextConfig = {
   reactStrictMode: false,
 };
 
-export default nextConfig;
+export default withAnalyzer({ enabled: true })(nextConfig);

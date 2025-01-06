@@ -1,8 +1,8 @@
 "use client";
 import { useState, useCallback, FormEvent } from "react";
-import ReactMarkdown from "react-markdown";
 import fetcher from "@shared/api/fetch";
 import { Button } from "@ui/button";
+import "./GeminiChat.css";
 
 type Args = {
   defaultValue?: string;
@@ -13,21 +13,37 @@ const useChat = ({ defaultValue = "", defaultResponse = "" }: Args) => {
   const [message, setMessage] = useState(defaultValue);
   const [response, setResponse] = useState(defaultResponse);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const sendMessage = useCallback(async (message: string) => {
     setIsLoading(true);
     setError(null);
     setResponse("");
 
-    const response = await fetcher<{ content: string }>(
-      "/api/chat?message=" + encodeURIComponent(message),
-    );
+    try {
+      const res = await fetch(
+        "/api/chat?message=" + encodeURIComponent(message),
+      );
+      if (!res.body) throw new Error("No stream available in response");
 
-    setResponse(response.content);
-    setIsLoading(false);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+      let result = "";
+
+      while (!done) {
+        const { value, done: chunkDone } = await reader.read();
+        done = chunkDone;
+        result += decoder.decode(value, { stream: true });
+
+        setResponse(result);
+      }
+    } catch (err) {
+      setError("Error while streaming response");
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
-
   return {
     message,
     setMessage,
@@ -57,7 +73,7 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
 
     await sendMessage(message);
     setMessage("");
-    setSaveStatus("idle"); // Reset saved state when new response is received
+    setSaveStatus("idle");
   };
 
   const handleSave = async () => {
@@ -119,40 +135,10 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
 
       {response && (
         <div className="space-y-4">
-          <div className="geminichka p-4 border rounded bg-gray-50 text-black prose dark:prose-invert max-w-none">
-            <ReactMarkdown
-              components={{
-                pre({ children, ...props }) {
-                  return (
-                    <pre
-                      className="bg-gray-100 p-4 rounded-lg overflow-auto"
-                      {...props}
-                    >
-                      {children}
-                    </pre>
-                  );
-                },
-                a({ children, ...props }) {
-                  return (
-                    <a className="text-blue-500 hover:text-blue-600" {...props}>
-                      {children}
-                    </a>
-                  );
-                },
-                h1: ({ ...props }) => (
-                  <h1 className="text-2xl font-bold mt-6 mb-4" {...props} />
-                ),
-                h2: ({ ...props }) => (
-                  <h2 className="text-xl font-bold mt-5 mb-3" {...props} />
-                ),
-                h3: ({ ...props }) => (
-                  <h3 className="text-lg font-bold mt-4 mb-2" {...props} />
-                ),
-              }}
-            >
-              {response}
-            </ReactMarkdown>
-          </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: response }}
+            className="geminichka p-4 border rounded bg-gray-50 text-black prose dark:prose-invert max-w-none"
+          ></div>
 
           <div className="flex items-center justify-end gap-2">
             <span className="text-sm text-gray-600">Like the explanation?</span>
