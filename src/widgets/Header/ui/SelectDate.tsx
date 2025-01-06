@@ -12,7 +12,7 @@ const SelectDate = () => {
 
   const onChange = (date?: Date) => {
     if (!date) return;
-    router.push(`?date=${date.toJSON()}`);
+    router.push(`?date=${date.toJSON()}&page=1`);
   };
 
   if (pathname !== "/words") return;

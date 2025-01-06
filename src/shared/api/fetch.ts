@@ -28,6 +28,13 @@ const buildUrl = (url: string, params?: Params) => {
   return urlObj.toString();
 };
 
+const getBody = <T>(body: T) => {
+  if (body instanceof FormData) return body;
+  if (body) return JSON.stringify(body);
+
+  return undefined;
+};
+
 export default async function fetcher<TResponse = unknown, TBody = unknown>(
   endpoint: string | string[],
   options: FetchOptions<TBody> = {},
@@ -48,7 +55,7 @@ export default async function fetcher<TResponse = unknown, TBody = unknown>(
         "Content-Type": "application/json",
         ...headers,
       },
-      body: body ? JSON.stringify(body) : undefined,
+      body: getBody(body),
     });
 
     const data: TResponse = await response.json();

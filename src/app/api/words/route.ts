@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@app/api/auth/[...nextauth]/auth";
 import { Pagination } from "@shared/types/pagination";
 import { endOfDay, startOfDay } from "date-fns";
-import { fromZonedTime } from "date-fns-tz";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -74,10 +74,8 @@ export async function GET(request: Request) {
     );
   }
 
-  // Convert the date to the specified timezone
-  const parsedDate = new Date(day);
+  const parsedDate = toZonedTime(day, timezone);
 
-  // Get start and end of day in the specified timezone
   const start = fromZonedTime(startOfDay(parsedDate), timezone);
   const end = fromZonedTime(endOfDay(parsedDate), timezone);
 

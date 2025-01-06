@@ -4,18 +4,19 @@ import { getWordListColumns } from "@/src/features/Word/WordList/lib/getWordList
 import useSWR from "swr";
 import fetcher from "@shared/api/fetch";
 import { WithRelation } from "@shared/types/prisma";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 import { useColumnVisibility } from "@shared/hooks/useColumnVisibility";
 import Pageable from "@ui/pagination";
 import { Pagination as PaginationType } from "@shared/types/pagination";
-import { useState } from "react";
+
 type WordListProps = {
   date: Date;
 };
 
 export default function WordList({ date }: WordListProps) {
-  const [page, setPage] = useState<number>(0);
+  const params = useSearchParams();
+  const page = Number(params.get("page"));
 
   const { data: words, isLoading } = useSWR<{
     content: WithRelation<"Word", "subject">[];
@@ -26,6 +27,15 @@ export default function WordList({ date }: WordListProps) {
 
   const goToDetails = (word: WithRelation<"Word", "subject">) => {
     router.push(`/words/${word.id}`);
+  };
+
+  const onPageChange = (page: number) => {
+    if (params.get("date")) {
+      return router.push(`/words?date=${params.get("date")}&page=${page}`, {
+        scroll: false,
+      });
+    }
+    router.push(`?page=${page}`, { scroll: false });
   };
 
   const { columnVisibility } = useColumnVisibility([
@@ -47,7 +57,7 @@ export default function WordList({ date }: WordListProps) {
         data={words?.content || []}
       />
       <Pageable
-        onChange={setPage}
+        onChange={onPageChange}
         totalPage={words?.pagination?.totalPages}
         currentPage={words?.pagination?.page}
       />
