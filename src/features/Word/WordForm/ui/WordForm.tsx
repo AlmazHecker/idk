@@ -19,7 +19,7 @@ import {
 import { Controller, UseFormReturn } from "react-hook-form";
 import { Subject } from "@prisma/client";
 import { mapWordApiDataToFormData } from "@/src/features/Word/WordForm/transformer/transformer";
-import { capitalize, cn } from "@shared/lib/utils";
+import { cn } from "@shared/lib/utils";
 import { SelectSubject } from "@/src/features/Word/WordForm/ui/SelectSubject";
 import { WithRelation } from "@shared/types/prisma";
 
@@ -64,36 +64,17 @@ const WordForm: FC<WordFormProps> = ({ value, onSubmit, className, type }) => {
               }}
             />
 
-            <Controller
-              control={form.control}
-              name="word"
-              render={({ field }) => {
-                return (
-                  <Input
-                    {...field}
-                    onChange={(e) => field.onChange(capitalize(e.target.value))}
-                    error={errors.word}
-                    label="Word"
-                    placeholder="New word"
-                  />
-                );
-              }}
+            <Input
+              {...form.register("word")}
+              error={errors.word}
+              label="Word"
+              placeholder="New word"
             />
-
-            <Controller
-              control={form.control}
-              name="translation"
-              render={({ field }) => {
-                return (
-                  <Input
-                    {...field}
-                    onChange={(e) => field.onChange(capitalize(e.target.value))}
-                    error={errors.translation}
-                    label="Translation"
-                    placeholder="Translation of the word"
-                  />
-                );
-              }}
+            <Input
+              {...form.register("translation")}
+              error={errors.translation}
+              label="Translation"
+              placeholder="Translation of the word"
             />
           </div>
         </CardContent>
