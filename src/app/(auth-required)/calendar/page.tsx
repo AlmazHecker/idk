@@ -24,12 +24,8 @@ const localizer = dateFnsLocalizer({
 });
 
 const LandingPage = () => {
-  const [date, setDate] = useState(new Date());
+  const [date] = useState(new Date());
   const router = useRouter();
-
-  const handleNavigate = (newDate: Date) => {
-    setDate(newDate);
-  };
 
   const onDayClick = (slotInfo: SlotInfo) => {
     return router.push(`/words?date=${slotInfo.start.toJSON()}`);
@@ -44,7 +40,6 @@ const LandingPage = () => {
         selectable
         date={date}
         onSelectSlot={onDayClick}
-        onNavigate={handleNavigate}
         views={["month"]}
       />
     </main>
