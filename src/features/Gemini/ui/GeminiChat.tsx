@@ -38,6 +38,7 @@ const useChat = ({ defaultValue = "", defaultResponse = "" }: Args) => {
 
         setResponse(result);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Error while streaming response");
     } finally {
