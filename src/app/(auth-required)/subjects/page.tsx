@@ -10,8 +10,8 @@ import { Subject } from "@prisma/client";
 import fetcher from "@shared/api/fetch";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
-import dynamic from "next/dynamic";
-const CreateSubjectDialog = dynamic(
+import NDynamic from "next/dynamic";
+const CreateSubjectDialog = NDynamic(
   () => import("@/src/features/Subject/CreateSubject/ui/CreateSubjectDialog"),
 );
 
