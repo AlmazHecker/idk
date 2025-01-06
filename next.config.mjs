@@ -1,4 +1,4 @@
-import withAnalyzer from "@next/bundle-analyzer";
+// import withAnalyzer from "@next/bundle-analyzer";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,4 +8,4 @@ const nextConfig = {
   reactStrictMode: false,
 };
 
-export default withAnalyzer({ enabled: true })(nextConfig);
+export default nextConfig;
