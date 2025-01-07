@@ -2,7 +2,8 @@
 import { useState, useCallback, FormEvent } from "react";
 import fetcher from "@shared/api/fetch";
 import { Button } from "@ui/button";
-import "./GeminiChat.css";
+import css from "./GeminiChat.module.css";
+import { cn } from "@shared/lib/utils";
 
 type Args = {
   defaultValue?: string;
@@ -138,7 +139,10 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
         <div className="space-y-4">
           <div
             dangerouslySetInnerHTML={{ __html: response }}
-            className="geminichka p-4 border rounded bg-gray-50 text-black prose dark:prose-invert max-w-none"
+            className={cn(
+              css.response,
+              "p-4 border rounded bg-gray-50 text-black prose dark:prose-invert max-w-none",
+            )}
           ></div>
 
           <div className="flex items-center justify-end gap-2">

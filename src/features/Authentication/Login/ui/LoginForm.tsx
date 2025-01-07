@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
 import {
@@ -7,15 +8,42 @@ import {
 import { FieldError, UseFormReturn } from "react-hook-form";
 import { PasswordInput } from "@ui/password-input";
 import { useCustomForm } from "@shared/hooks/useCustomForm";
+import { signIn } from "next-auth/react";
+import { isApiError } from "@shared/api/error-handling";
+import { useRouter } from "next/navigation";
 
-type LoginFormProps = {
-  onSubmit: (data: LoginFormData, form: UseFormReturn<LoginFormData>) => void;
-};
+export default function LoginForm() {
+  const router = useRouter();
 
-export default function LoginForm({ onSubmit }: LoginFormProps) {
   const { form, errors, handleSubmit } = useCustomForm<LoginFormData>({
     schema: loginFormSchema,
   });
+
+  const onSubmit = async (
+    data: LoginFormData,
+    formApi: UseFormReturn<LoginFormData>,
+  ) => {
+    try {
+      formApi.clearErrors();
+      const res = await signIn("credentials", {
+        username: data.username,
+        password: data.password,
+        callbackUrl: "/words",
+        redirect: false,
+      });
+
+      if (res?.error) {
+        return formApi.setError("root", { message: res.error });
+      }
+      if (res?.ok) {
+        return router.replace("/words");
+      }
+    } catch (e) {
+      formApi.setError("root", {
+        message: isApiError(e) ? e?.message : "IDK. Something went wrong.",
+      });
+    }
+  };
 
   return (
     <form

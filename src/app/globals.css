@@ -72,8 +72,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-
-.geminichka  * {
-  all: revert;
-}

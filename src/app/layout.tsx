@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Providers from "@app/Providers";
 import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
@@ -22,9 +21,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={theme?.value === "light" ? "light" : "dark"}>
-      <body className={`font-mono antialiased`}>
-        <Providers>{children}</Providers>
-      </body>
+      <body className={`font-mono antialiased`}>{children}</body>
     </html>
   );
 }
