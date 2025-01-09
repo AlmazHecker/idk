@@ -168,6 +168,7 @@ export const TextEditor: FC<TextEditorProps> = ({
   error,
 }) => {
   const editor = useEditor({
+    immediatelyRender: false,
     extensions,
     content: value,
     onUpdate: ({ editor }) => {

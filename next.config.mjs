@@ -5,7 +5,7 @@ const nextConfig = {
   eslint: {
     dirs: ["./src", "./app", "./components"],
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
 };
 
 export default nextConfig;

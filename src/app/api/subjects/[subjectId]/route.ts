@@ -53,3 +53,18 @@ export async function DELETE(
 
   return Response.json({ message: "SUCCESS!" });
 }
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<URLParams> },
+) {
+  const subjectId = (await params).subjectId;
+
+  if (isNotNumberLike(subjectId)) {
+    return Response.json({ message: "subjectId shouldn't be null!" });
+  }
+
+  const subject = await prisma.subject.findFirst({ where: { id: +subjectId } });
+
+  return Response.json({ content: subject });
+}

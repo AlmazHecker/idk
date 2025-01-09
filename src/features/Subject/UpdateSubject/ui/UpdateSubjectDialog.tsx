@@ -39,10 +39,6 @@ export default function UpdateSubjectDialog({ value, ...props }: Props) {
     }
   };
 
-  if (subject.isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Dialog {...props}>
       <DialogContent
@@ -55,11 +51,15 @@ export default function UpdateSubjectDialog({ value, ...props }: Props) {
           Update subject
         </DialogDescription>
 
-        <SubjectForm
-          className="md:w-full w-auto border-none"
-          onSubmit={onSubmit}
-          value={subject?.data?.content}
-        />
+        {subject.isLoading ? (
+          <div className="p-10">Loading...</div>
+        ) : (
+          <SubjectForm
+            className="md:w-full w-auto border-none"
+            onSubmit={onSubmit}
+            value={subject?.data?.content}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

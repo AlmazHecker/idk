@@ -59,7 +59,6 @@ function Calendar({
       }}
       components={{
         Chevron: ({ className, ...props }) => {
-          console.log(className);
           if (props.orientation === "left") {
             return (
               <ChevronLeft className={cn("h-4 w-4", className)} {...props} />
