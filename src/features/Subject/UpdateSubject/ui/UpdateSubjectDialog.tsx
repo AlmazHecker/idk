@@ -22,6 +22,7 @@ export default function UpdateSubjectDialog({ value, ...props }: Props) {
   const subject = useSWR<{ content: Subject }>(
     props.open ? `/api/subjects/${value.id}` : null,
     fetcher,
+    { revalidateOnFocus: false },
   );
 
   const onSubmit = async (
