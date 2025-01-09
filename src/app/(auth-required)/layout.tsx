@@ -15,7 +15,7 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
   }
 
   return (
-    <div className="pt-6 px-2 pb-20 md:gap-16 gap-4 sm:px-20">
+    <div className="py-4 md:py-6 px-2 pb-20 md:gap-16 gap-4 sm:px-20">
       <Header />
       {children}
     </div>

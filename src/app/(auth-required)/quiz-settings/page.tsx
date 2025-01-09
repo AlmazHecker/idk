@@ -36,7 +36,7 @@ const Page = () => {
   return (
     <form
       onSubmit={submitSettings}
-      className="max-w-xl mx-auto grid place-items-center h-[calc(100vh-92px-6.5rem)] md:h-[calc(100vh-76px-5rem)]"
+      className="max-w-xl mx-auto grid place-items-center h-[calc(100vh-92px-6.5rem)] md:h-[calc(100vh-92px-5rem)]"
     >
       <Card>
         <CardHeader>Quiz Settings</CardHeader>

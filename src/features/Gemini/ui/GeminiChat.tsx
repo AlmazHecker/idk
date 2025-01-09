@@ -74,7 +74,7 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
     if (!message.trim()) return;
 
     await sendMessage(message);
-    setMessage("");
+    // setMessage("");
     setSaveStatus("idle");
   };
 
@@ -108,21 +108,20 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto py-4 md:p-4">
       <form onSubmit={handleSubmit} className="mb-4">
         <div className="flex gap-2">
-          <input
-            type="text"
+          <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 p-2 border rounded text-black"
             disabled={isLoading}
+            className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none min-h-[100px] text-black bg-white placeholder-gray-400 transition-all outline-none"
           />
           <button
             type="submit"
             disabled={isLoading}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 h-fit self-end transition-colors"
           >
             {isLoading ? "Sending..." : "Send"}
           </button>
@@ -145,16 +144,20 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
             )}
           ></div>
 
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-sm text-gray-600">Like the explanation?</span>
-            <Button
-              onClick={handleSave}
-              disabled={saveStatus === "loading" || saveStatus === "success"}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {getSaveButtonContent()}
-            </Button>
-          </div>
+          {isLoading || (
+            <div className="flex items-center justify-end gap-2">
+              <span className="text-sm text-gray-600">
+                Like the explanation?
+              </span>
+              <Button
+                onClick={handleSave}
+                disabled={saveStatus === "loading" || saveStatus === "success"}
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {getSaveButtonContent()}
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

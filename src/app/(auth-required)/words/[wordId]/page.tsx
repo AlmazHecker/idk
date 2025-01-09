@@ -25,15 +25,21 @@ const Page: FC<PageProps> = async ({ params }) => {
   }
 
   return (
-    <div>
-      <div className="flex justify-center text-3xl items-center mt-10">
-        <h2 className="pb-2  font-semibold  transition-colors first:mt-0">
-          {word.word}
+    <div
+    // experimental background :)
+    // style={{
+    //   backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg width='200' height='100' viewBox='0 0 200 100' xmlns='http://www.w3.org/2000/svg'%3e%3ctext transform='rotate(30 50 50)' x='20' y='50' fill='red' font-size='24px'%3e${word.word}%3c/text%3e%3c/svg%3e")`,
+    //   backgroundRepeat: "repeat",
+    //   height: "100vh",
+    // }}
+    >
+      <div className="text-3xl mt-10">
+        <h2 className="pb-2 font-semibold transition-colors first:mt-0">
+          Word: {word.word}
         </h2>
 
-        <p className="mx-5 md:mx-20">===</p>
         <h2 className="dpb-2 font-semibold transition-colors first:mt-0">
-          {word.translation}
+          Translation: {word.translation}
         </h2>
       </div>
 

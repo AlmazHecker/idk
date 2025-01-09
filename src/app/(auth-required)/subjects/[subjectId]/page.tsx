@@ -16,7 +16,7 @@ const Page = async ({ params }: { params: Params }) => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="relative text-center text-7xl md:text-9xl -mt-6 mb-6 font-semibold h-[calc(100vh-76px)] grid place-items-center">
+      <h1 className="relative text-center text-[2.5em] md:text-[5em] -mt-6 mb-6 font-semibold md:h-[calc(100vh-76px)] h-[calc(100vh-92px)] grid place-items-center">
         {subject?.title}
 
         <ScrollDown className="absolute bottom-0 md:block hidden" />
