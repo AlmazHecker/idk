@@ -33,7 +33,7 @@ export async function PUT(
 
   await prisma.subject.update({
     where: { id: +subjectId },
-    data: { title: subject.title },
+    data: { title: subject.title, content: subject.content },
   });
 
   return Response.json({ message: "SUCCESS!" });
