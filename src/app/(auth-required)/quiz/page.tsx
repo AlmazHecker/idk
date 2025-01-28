@@ -8,6 +8,9 @@ type PageProps = {
     "word-count": string;
     difficulty: string;
     day: string;
+    start?: string;
+    end?: string;
+    timezone: string;
   }>;
 };
 
@@ -19,12 +22,13 @@ const getLimitForDifficulty = (difficulty: string) => {
 const Page: FC<PageProps> = async ({ searchParams }) => {
   const p = await searchParams;
 
-  const day = p?.day ? new Date(p?.day) : "";
+  const from = p?.start ? new Date(p?.start) : undefined;
+  const to = p?.end ? new Date(p?.end) : undefined;
   const difficulty = p?.difficulty;
 
   const limit = getLimitForDifficulty(difficulty);
 
-  const randomWords = await getRandomWords(day, limit);
+  const randomWords = await getRandomWords({ from, to }, limit, p.timezone);
 
   return (
     <div className="max-w-xl mx-auto grid place-items-center h-[calc(100vh-92px-6.5rem)] md:h-[calc(100vh-92px-5rem)]">

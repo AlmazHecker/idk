@@ -12,20 +12,24 @@ import { useToggle } from "@shared/hooks/useToggle";
 import { WithRelation } from "@shared/types/prisma";
 import dynamic from "next/dynamic";
 const UpdateWordDialog = dynamic(
-  () => import("@/src/features/Word/UpdateWord/ui/UpdateWordDialog"),
+  () => import("@/src/features/Word/UpdateWord/ui/UpdateWordDialog")
 );
 const DeleteWordDialog = dynamic(
-  () => import("@/src/features/Word/DeleteWord/ui/DeleteWordDialog"),
+  () => import("@/src/features/Word/DeleteWord/ui/DeleteWordDialog")
 );
 
-export const getWordListColumns = (): ColumnDef<
-  WithRelation<"Word", "subject">
->[] => {
+type Args = {
+  skipped: number;
+};
+
+export const getWordListColumns = ({
+  skipped,
+}: Args): ColumnDef<WithRelation<"Word", "subject">>[] => {
   return [
     {
       accessorKey: "id",
       header: "ID",
-      cell: (info) => info.row.index,
+      cell: (info) => skipped + info.row.index,
     },
     {
       header: "Subject",

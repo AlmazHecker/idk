@@ -53,7 +53,7 @@ export default function WordList({ date }: WordListProps) {
       <DataTable
         columnVisibility={columnVisibility}
         onRowClick={goToDetails}
-        columns={getWordListColumns()}
+        columns={getWordListColumns({ skipped: (page - 1) * 10 })}
         data={words?.content || []}
       />
       <Pageable

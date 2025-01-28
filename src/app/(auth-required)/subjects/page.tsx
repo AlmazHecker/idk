@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useDebounce } from "use-debounce";
 import NDynamic from "next/dynamic";
 const CreateSubjectDialog = NDynamic(
-  () => import("@/src/features/Subject/CreateSubject/ui/CreateSubjectDialog"),
+  () => import("@/src/features/Subject/CreateSubject/ui/CreateSubjectDialog")
 );
 
 export default function Page() {
@@ -25,7 +25,7 @@ export default function Page() {
 
   const { data: subjects, isLoading } = useSWR<{ content: Subject[] }>(
     `/api/subjects?day=${date?.toISOString() || ""}&search=${debouncedSearch}`,
-    fetcher,
+    fetcher
   );
 
   return (
@@ -35,7 +35,7 @@ export default function Page() {
           <DatePicker
             value={date}
             onChange={setDate}
-            className="w-full md:w-[250px]"
+            triggerClassName="w-full md:w-[250px]"
           />
           <Input
             value={search}

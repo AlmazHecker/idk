@@ -2,13 +2,14 @@
 import { FormEvent, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "@ui/card";
 import { Select } from "@ui/select";
-import { DatePicker } from "@ui/date-picker";
 import { Button } from "@ui/button";
 import { useRouter } from "next/navigation";
 import { DIFFICULTIES } from "@/src/features/WordQuiz/model/difficulty";
+import DateRangePicker from "@/src/shared/ui/date-range-picker";
+import { DateRange } from "react-day-picker";
 type QuizSettingsState = {
   difficulty: string;
-  date?: Date;
+  dateRange?: DateRange;
 };
 
 const Page = () => {
@@ -22,14 +23,26 @@ const Page = () => {
     setQuizSettings({ ...quizSettings, difficulty: e });
   };
 
-  const onDateChange = (e?: Date) => {
-    setQuizSettings({ ...quizSettings, date: e });
+  const onDateChange = (dateRange?: DateRange) => {
+    if (dateRange?.from && !dateRange?.to) {
+      return setQuizSettings({
+        ...quizSettings,
+        dateRange: { from: dateRange.from, to: dateRange.from },
+      });
+    }
+
+    setQuizSettings({ ...quizSettings, dateRange });
   };
 
   const submitSettings = (e: FormEvent) => {
     e.preventDefault();
+    const { dateRange, difficulty } = quizSettings;
+    const dateString = `start=${dateRange?.from?.toISOString()}&end=${dateRange?.to?.toISOString()}`;
+
+    const userTZ = `timezone=${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+
     return router.push(
-      `/quiz?difficulty=${quizSettings.difficulty}&day=${quizSettings.date?.toISOString() || ""}`,
+      `/quiz?difficulty=${difficulty}&${dateString}&${userTZ}`
     );
   };
 
@@ -47,10 +60,12 @@ const Page = () => {
             label="Select difficulty"
             options={DIFFICULTY_OPTIONS}
           />
-          <DatePicker
-            value={quizSettings.date}
+          <DateRangePicker
+            value={quizSettings.dateRange}
             onChange={onDateChange}
-            label="Words from a specific day(optional)"
+            label="Words from a specific days(optional)"
+            min={1}
+            max={31}
           />
         </CardContent>
         <CardFooter>

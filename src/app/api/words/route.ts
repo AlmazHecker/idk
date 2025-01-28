@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
     return Response.json(
       { message: "Invalid request", errors },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     if (!subject) {
       return Response.json(
         { message: "Subject with given id not found!" },
-        { status: 400 },
+        { status: 400 }
       );
     }
   }
@@ -70,7 +70,7 @@ export async function GET(request: Request) {
   if (!day) {
     return Response.json(
       { message: "Day parameter is required" },
-      { status: 400 },
+      { status: 400 }
     );
   }
 

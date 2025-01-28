@@ -13,7 +13,7 @@ export interface DatePickerProps {
   value?: Date;
   onChange?: (date: Date | undefined) => void;
   placeholder?: string;
-  className?: string;
+  triggerClassName?: string;
   disabled?: boolean;
   label?: string;
 }
@@ -22,7 +22,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   value,
   onChange,
   placeholder = "Pick a date",
-  className,
+  triggerClassName,
   disabled = false,
   label,
 }) => {
@@ -36,7 +36,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             className={cn(
               "w-[280px] justify-start text-left font-normal",
               !value && "text-muted-foreground",
-              className,
+              triggerClassName
             )}
             disabled={disabled}
           >

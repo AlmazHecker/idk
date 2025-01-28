@@ -17,7 +17,11 @@ const SelectDate = () => {
 
   if (pathname !== "/words") return;
   return (
-    <DatePicker value={value} className="w-[200px] mr-2" onChange={onChange} />
+    <DatePicker
+      value={value}
+      triggerClassName="w-[200px] mr-2"
+      onChange={onChange}
+    />
   );
 };
 
