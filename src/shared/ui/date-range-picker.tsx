@@ -94,6 +94,10 @@ export function DateRangePicker({
         <PopoverContent
           className={cn("w-auto p-0", calendarClassName)}
           align={align}
+          style={{
+            maxHeight: "var(--radix-popover-content-available-height)",
+            overflowY: "auto",
+          }}
         >
           <Calendar
             {...props}
