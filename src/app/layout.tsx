@@ -22,7 +22,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="./toggle-theme.js" />
+        <script src="/toggle-theme.js" />
       </head>
       <body className="font-mono antialiased">{children}</body>
     </html>
