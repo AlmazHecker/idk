@@ -1,22 +1,39 @@
+// react-day-picker doesn't have generic like type for props
+// that's why I implemented my own.
 "use client";
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker, DayPickerProps } from "react-day-picker";
+import {
+  DateRange,
+  DayPicker,
+  Mode,
+  PropsBase,
+  PropsMulti,
+  PropsRange,
+  PropsSingle,
+} from "react-day-picker";
 
 import { cn } from "@shared/lib/utils";
 import { buttonVariants } from "@ui/button";
 
-export type CalendarProps = DayPickerProps;
+export type DayPickerProps<M extends Mode> = M extends "single"
+  ? PropsBase & PropsSingle
+  : M extends "multiple"
+    ? PropsBase & PropsMulti
+    : M extends "range"
+      ? PropsBase & PropsRange
+      : PropsSingle;
 
-export const Calendar: React.FC<DayPickerProps> = ({
+export const Calendar = <T extends Mode>({
   className,
   classNames,
   showOutsideDays = true,
   ...props
-}) => {
+}: DayPickerProps<T>) => {
   return (
     <DayPicker
+      defaultMonth={getDefaultMonth(props.selected)}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
@@ -69,8 +86,19 @@ export const Calendar: React.FC<DayPickerProps> = ({
           );
         },
       }}
-      {...props}
+      {...(props as DayPickerProps<"single">)}
     />
   );
 };
 Calendar.displayName = "Calendar";
+
+// go to month with selected date
+const getDefaultMonth = (
+  value: Date | Date[] | DateRange | undefined
+): Date | undefined => {
+  if ((value as DateRange)?.from) return (value as DateRange).from;
+  if (Array.isArray(value)) return value[0];
+  if (value instanceof Date) return value;
+
+  return undefined;
+};

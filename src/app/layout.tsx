@@ -1,5 +1,5 @@
 // Next.js doesn't allow to use synchronous scripts.
-// It's Script compoonent causes theme flash, that's why I used native script tag
+// Next.js's Script component causes theme flash, that's why I used native script tag
 /* eslint-disable @next/next/no-sync-scripts */
 import type { Metadata } from "next";
 import "./globals.css";
