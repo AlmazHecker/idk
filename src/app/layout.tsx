@@ -1,8 +1,6 @@
-// Next.js doesn't allow to use synchronous scripts.
-// Next.js's Script component causes theme flash, that's why I used native script tag
-/* eslint-disable @next/next/no-sync-scripts */
 import type { Metadata } from "next";
 import "./globals.css";
+import ThemeLoader from "./registry/ThemeLoader";
 
 export const metadata: Metadata = {
   title: "IDK",
@@ -21,10 +19,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <script src="/toggle-theme.js" />
-      </head>
-      <body className="font-mono antialiased">{children}</body>
+      <body className="font-mono antialiased">
+        <ThemeLoader>{children}</ThemeLoader>
+      </body>
     </html>
   );
 }
