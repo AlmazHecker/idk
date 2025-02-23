@@ -51,7 +51,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = (props) => {
           variant="outline"
           className={cn(
             getOptionClassName(option),
-            "border px-2 py-2 mt-1 mb-1 rounded flex justify-between items-center cursor-pointer",
+            "border px-2 py-2 mt-1 mb-1 rounded-sm flex justify-between items-center cursor-pointer",
           )}
           onClick={() => !submitted && setAnswer(option)} // Allow selection only if not submitted
         >

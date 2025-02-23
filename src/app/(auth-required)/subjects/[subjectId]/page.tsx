@@ -21,7 +21,7 @@ const Page = async ({ params }: { params: Params }) => {
 
         <ScrollDown className="absolute bottom-0 md:block hidden" />
       </h1>
-      <div className="geminichka p-4 border rounded bg-background prose dark:prose-invert max-w-none">
+      <div className="geminichka p-4 border rounded-sm bg-background prose dark:prose-invert max-w-none">
         <TextEditor editable={false} value={subject?.content} />
       </div>
     </div>

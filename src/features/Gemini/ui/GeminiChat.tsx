@@ -2,7 +2,6 @@
 import { useState, useCallback, FormEvent } from "react";
 import fetcher from "@shared/api/fetch";
 import { Button } from "@ui/button";
-import css from "./GeminiChat.module.css";
 import { cn } from "@shared/lib/utils";
 
 type Args = {
@@ -74,7 +73,6 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
     if (!message.trim()) return;
 
     await sendMessage(message);
-    // setMessage("");
     setSaveStatus("idle");
   };
 
@@ -89,21 +87,14 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
       setSaveStatus("success");
     } catch (err) {
       setSaveStatus("reject");
-
       console.error("Failed to save explanation:", err);
     }
   };
 
   const getSaveButtonContent = () => {
-    if (saveStatus === "loading") {
-      return "Saving...";
-    }
-    if (saveStatus === "success") {
-      return "Saved!";
-    }
-    if (saveStatus === "reject") {
-      return "Unable to save :(";
-    }
+    if (saveStatus === "loading") return "Saving...";
+    if (saveStatus === "success") return "Saved!";
+    if (saveStatus === "reject") return "Unable to save :(";
     return "Save";
   };
 
@@ -116,7 +107,7 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type your message..."
             disabled={isLoading}
-            className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none min-h-[100px] text-black bg-white placeholder-gray-400 transition-all outline-none"
+            className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none min-h-[100px] text-black bg-white placeholder-gray-400 transition-all outline-hidden"
           />
           <button
             type="submit"
@@ -129,7 +120,7 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
       </form>
 
       {error && (
-        <div className="p-4 mb-4 border rounded bg-red-50 text-red-600">
+        <div className="p-4 mb-4 border rounded-sm bg-red-50 text-red-600">
           {error}
         </div>
       )}
@@ -139,10 +130,9 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
           <div
             dangerouslySetInnerHTML={{ __html: response }}
             className={cn(
-              css.response,
-              "p-4 border rounded bg-gray-50 text-black prose dark:prose-invert max-w-none",
+              "!p-4 border !rounded-sm !bg-gray-50 !text-black revert-tailwind",
             )}
-          ></div>
+          />
 
           {isLoading || (
             <div className="flex items-center justify-end gap-2">
@@ -152,7 +142,7 @@ const ChatComponent = ({ value, explanation, wordId }: ChatComponentProps) => {
               <Button
                 onClick={handleSave}
                 disabled={saveStatus === "loading" || saveStatus === "success"}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-green-500 text-white rounded-sm hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {getSaveButtonContent()}
               </Button>

@@ -5,10 +5,10 @@ import {
   UseFormReturn,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodEffects, ZodObject, ZodRawShape } from "zod";
+import { ZodSchema } from "zod";
 
 interface UseCustomFormProps<T extends FieldValues> extends UseFormProps<T> {
-  schema: ZodObject<ZodRawShape> | ZodEffects<ZodObject<ZodRawShape>>;
+  schema: ZodSchema;
 }
 
 export function useCustomForm<T extends FieldValues>({
