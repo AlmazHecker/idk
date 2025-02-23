@@ -19,10 +19,6 @@
 .m_scroll_arrows
 {
     display: block;
-    width: 5px;
-    height: 5px;
-    -ms-transform: rotate(45deg); /* IE 9 */
-    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
     transform: rotate(45deg);
 
     border-right: 2px solid white;
@@ -92,8 +88,6 @@
 }
 
 .wheel {
-    height: 5px;
-    width: 2px;
     display: block;
     margin: 5px auto;
     background: white;
@@ -115,15 +109,11 @@
 @-webkit-keyframes mouse-wheel{
     0% {
         opacity: 1;
-        -webkit-transform: translateY(0);
-        -ms-transform: translateY(0);
         transform: translateY(0);
     }
 
     100% {
         opacity: 0;
-        -webkit-transform: translateY(6px);
-        -ms-transform: translateY(6px);
         transform: translateY(6px);
     }
 }
