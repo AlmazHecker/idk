@@ -4,7 +4,6 @@ import LogoutButton from "@/src/features/Authentication/Logout/ui/LogoutButton";
 import ThemeSwitch from "@/src/widgets/ThemeSwitch/ThemeSwitch";
 
 const Header = async () => {
-
   return (
     <div className="flex flex-col md:flex-row h-auto text-center justify-between items-center gap-2 pb-4 md:h-[52px]">
       <div>
@@ -17,11 +16,14 @@ const Header = async () => {
         <Link className="text-md" href="/quiz-settings" variant="ghost">
           Quiz
         </Link>
+        <Link className="text-md" href="/kanji" variant="ghost">
+          Kanji
+        </Link>
       </div>
 
       <div className="flex gap-2 items-center">
         <SelectDate />
-        <ThemeSwitch  />
+        <ThemeSwitch />
         <LogoutButton />
       </div>
     </div>
