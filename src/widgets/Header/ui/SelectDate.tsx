@@ -15,7 +15,7 @@ const SelectDate = () => {
     router.push(`?date=${date.toJSON()}&page=1`);
   };
 
-  if (pathname !== "/words") return;
+  if (!["/words", "/kanji"].includes(pathname)) return;
   return (
     <DatePicker
       value={value}

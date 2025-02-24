@@ -16,6 +16,7 @@ model User {
   updatedAt DateTime  @updatedAt
   subjects  Subject[]
   words     Word[]
+  kanji     Kanji[]
 }
 
 model Word {
@@ -40,4 +41,19 @@ model Subject {
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   words     Word[]
+}
+
+model Kanji {
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  id           Int    @id @default(autoincrement())
+  kanji        String
+  kunyomi      String
+  onyomi       String
+  meaning      String
+  jlptLevel    String
+  strokes      Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId      Int
 }

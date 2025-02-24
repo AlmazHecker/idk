@@ -1,30 +1,24 @@
 export class KVGAnimator {
+  static currentAnimation = null; // Store reference to the ongoing animation
+
   constructor(trigger, time = 1000) {
-    // Default time is now 1000ms (1 second)
     this.time = time;
     this.setOnHover(trigger, time);
   }
 
-  /**
-   * Add onhover function to triggers.
-   *
-   * @param {string} trigger
-   * @param {number} time
-   */
   setOnHover(trigger, time) {
     [trigger].forEach((elem) => {
       elem.onmouseenter = () => {
+        if (KVGAnimator.currentAnimation) {
+          KVGAnimator.currentAnimation.cancel(); // Stop previous animation
+        }
         const animate = new KVGAnimator(trigger, time);
+        KVGAnimator.currentAnimation = animate; // Store new animation reference
         animate.play(elem);
       };
     });
   }
 
-  /**
-   * Initiate the animation.
-   *
-   * @param {element} trigger
-   */
   play(svg) {
     if (
       !svg ||
@@ -47,9 +41,6 @@ export class KVGAnimator {
     this.animatePath(path, number);
   }
 
-  /**
-   * Hide paths and numbers before animation.
-   */
   hideAll() {
     this.paths.forEach((path, i) => {
       path.style.display = "none";
@@ -59,15 +50,8 @@ export class KVGAnimator {
     });
   }
 
-  /**
-   * Prepare for animation and call animation function.
-   *
-   * @param {element} path
-   * @param {element} number
-   */
   animatePath(path, number) {
     this.length = path.getTotalLength();
-
     path.style.display = "block";
     if (number) {
       number.style.display = "block";
@@ -79,22 +63,19 @@ export class KVGAnimator {
 
     path.getBoundingClientRect(); // Trigger layout
 
-    this.interval = this.time / this.length; // Calculate the delay per frame
+    this.interval = this.time / this.length;
+    this.cancelled = false; // Add a cancellation flag
 
     this.doAnimation(path);
   }
 
-  /**
-   * Do the animation.
-   *
-   * @param {path} path
-   */
   doAnimation(path) {
     const animate = () => {
+      if (this.cancelled) return; // Stop animation if canceled
       if (this.length >= 0) {
         path.style.strokeDashoffset = this.length;
         this.length--;
-        setTimeout(animate, this.interval); // Use setTimeout with the calculated interval
+        setTimeout(animate, this.interval);
       } else {
         this.count += 1;
         if (this.count < this.pathCount) {
@@ -105,6 +86,10 @@ export class KVGAnimator {
       }
     };
 
-    animate(); // Start the animation
+    animate();
+  }
+
+  cancel() {
+    this.cancelled = true; // Set flag to stop animation
   }
 }
